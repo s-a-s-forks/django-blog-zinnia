@@ -205,6 +205,10 @@ class EntryAbstractClass(models.Model):
         url = bittle and bittle.shortUrl or self.get_absolute_url()
         return url
 
+    @property
+    def category_slugs(self):
+        return map(lambda cat: cat.slug, self.categories.all())
+
     def __unicode__(self):
         return '%s: %s' % (self.title, self.get_status_display())
 
