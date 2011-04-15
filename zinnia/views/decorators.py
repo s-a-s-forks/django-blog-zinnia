@@ -10,7 +10,7 @@ from django.views.decorators.cache import never_cache
 from zinnia.models import Entry
 
 
-def update_queryset(view, queryset,
+def update_queryset(view, queryset_callback,
                     queryset_parameter='queryset'):
     """Decorator around views based on a queryset
     passed in parameter, who will force the update
