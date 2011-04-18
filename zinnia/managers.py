@@ -23,9 +23,13 @@ def authors_published():
     """Return the published authors"""
     from django.contrib.auth.models import User
 
-    author_ids = [user.pk for user in User.objects.all()
-                  if user.entry_set.filter(status=PUBLISHED).count()]
-    return User.objects.filter(pk__in=author_ids)
+    #author_ids = [user.pk for user in User.objects.all()
+    #              if user.entry_set.filter(status=PUBLISHED).count()]
+    #return User.objects.filter(pk__in=author_ids)
+
+    # wat? no. no. noooo.
+
+    return User.objects.filter(entry__status=PUBLISHED)
 
 
 def entries_published(queryset):
