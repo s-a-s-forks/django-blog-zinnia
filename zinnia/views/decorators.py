@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import never_cache
+from django.db import models
 
 from zinnia.models import Entry
 
@@ -19,7 +20,17 @@ def update_queryset(view, queryset_callback,
 
     def wrap(*args, **kwargs):
         """Regenerate the queryset before passing it to the view."""
-        kwargs[queryset_parameter] = queryset()
+        qs = kwargs[queryset_parameter]
+
+        if isinstance(qs, models.query.QuerySet):
+            # TODO: is 'refreshing' the queryset even necessary?
+            pass
+        elif isinstance(qs, models.Model):
+            qs = qs.objects.all()
+        else:
+            qs = qs()
+        kwargs[queryset_parameter] = qs
+
         return view(*args, **kwargs)
 
     return wrap
